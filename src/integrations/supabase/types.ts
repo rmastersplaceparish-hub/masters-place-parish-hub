@@ -71,6 +71,7 @@ export type Database = {
           id: string
           score: number
           student_name: string
+          tab_switches: number
           total_marks: number
         }
         Insert: {
@@ -81,6 +82,7 @@ export type Database = {
           id?: string
           score?: number
           student_name: string
+          tab_switches?: number
           total_marks?: number
         }
         Update: {
@@ -91,6 +93,7 @@ export type Database = {
           id?: string
           score?: number
           student_name?: string
+          tab_switches?: number
           total_marks?: number
         }
         Relationships: [
@@ -216,6 +219,48 @@ export type Database = {
         }
         Relationships: []
       }
+      library_books: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          display_order: number
+          file_name: string
+          file_size: number | null
+          id: string
+          is_visible: boolean
+          storage_path: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          file_name: string
+          file_size?: number | null
+          id?: string
+          is_visible?: boolean
+          storage_path: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          file_name?: string
+          file_size?: number | null
+          id?: string
+          is_visible?: boolean
+          storage_path?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pastoral_messages: {
         Row: {
           created_at: string
@@ -317,15 +362,26 @@ export type Database = {
         Args: { p_access_code: string; p_message: string }
         Returns: Json
       }
-      submit_exam: {
-        Args: {
-          p_answers: Json
-          p_auto?: boolean
-          p_exam_id: string
-          p_student_name: string
-        }
-        Returns: Json
-      }
+      submit_exam:
+        | {
+            Args: {
+              p_answers: Json
+              p_auto?: boolean
+              p_exam_id: string
+              p_student_name: string
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_answers: Json
+              p_auto?: boolean
+              p_exam_id: string
+              p_student_name: string
+              p_tab_switches?: number
+            }
+            Returns: Json
+          }
       submit_issue: {
         Args: { p_category: string; p_message: string; p_title: string }
         Returns: Json

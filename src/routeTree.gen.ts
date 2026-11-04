@@ -19,7 +19,10 @@ import { Route as LibraryRouteImport } from './routes/library'
 import { Route as SermonsRouteImport } from './routes/sermons'
 import { Route as SubmitIssueRouteImport } from './routes/submit-issue'
 import { Route as AuthenticatedContentRouteImport } from './routes/_authenticated/content'
+import { Route as AuthenticatedExamsAdminRouteImport } from './routes/_authenticated/exams-admin'
 import { Route as AuthenticatedPastoralCareRouteImport } from './routes/_authenticated/pastoral-care'
+import { Route as ExamsIndexRouteImport } from './routes/exams.index'
+import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,12 +73,27 @@ const AuthenticatedContentRoute = AuthenticatedContentRouteImport.update({
   path: '/content',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedExamsAdminRoute = AuthenticatedExamsAdminRouteImport.update({
+  id: '/exams-admin',
+  path: '/exams-admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPastoralCareRoute =
   AuthenticatedPastoralCareRouteImport.update({
     id: '/pastoral-care',
     path: '/pastoral-care',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ExamsIndexRoute = ExamsIndexRouteImport.update({
+  id: '/exams/',
+  path: '/exams/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExamsExamIdRoute = ExamsExamIdRouteImport.update({
+  id: '/exams/$examId',
+  path: '/exams/$examId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -87,7 +105,10 @@ export interface FileRoutesByFullPath {
   '/sermons': typeof SermonsRoute
   '/submit-issue': typeof SubmitIssueRoute
   '/content': typeof AuthenticatedContentRoute
+  '/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/pastoral-care': typeof AuthenticatedPastoralCareRoute
+  '/exams/$examId': typeof ExamsExamIdRoute
+  '/exams/': typeof ExamsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -99,7 +120,10 @@ export interface FileRoutesByTo {
   '/sermons': typeof SermonsRoute
   '/submit-issue': typeof SubmitIssueRoute
   '/content': typeof AuthenticatedContentRoute
+  '/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/pastoral-care': typeof AuthenticatedPastoralCareRoute
+  '/exams/$examId': typeof ExamsExamIdRoute
+  '/exams': typeof ExamsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,7 +137,10 @@ export interface FileRoutesById {
   '/sermons': typeof SermonsRoute
   '/submit-issue': typeof SubmitIssueRoute
   '/_authenticated/content': typeof AuthenticatedContentRoute
+  '/_authenticated/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/_authenticated/pastoral-care': typeof AuthenticatedPastoralCareRoute
+  '/exams/$examId': typeof ExamsExamIdRoute
+  '/exams/': typeof ExamsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,7 +154,10 @@ export interface FileRouteTypes {
     | '/sermons'
     | '/submit-issue'
     | '/content'
+    | '/exams-admin'
     | '/pastoral-care'
+    | '/exams/$examId'
+    | '/exams/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -139,7 +169,10 @@ export interface FileRouteTypes {
     | '/sermons'
     | '/submit-issue'
     | '/content'
+    | '/exams-admin'
     | '/pastoral-care'
+    | '/exams/$examId'
+    | '/exams'
   id:
     | '__root__'
     | '/'
@@ -152,7 +185,10 @@ export interface FileRouteTypes {
     | '/sermons'
     | '/submit-issue'
     | '/_authenticated/content'
+    | '/_authenticated/exams-admin'
     | '/_authenticated/pastoral-care'
+    | '/exams/$examId'
+    | '/exams/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,6 +201,8 @@ export interface RootRouteChildren {
   LibraryRoute: typeof LibraryRoute
   SermonsRoute: typeof SermonsRoute
   SubmitIssueRoute: typeof SubmitIssueRoute
+  ExamsExamIdRoute: typeof ExamsExamIdRoute
+  ExamsIndexRoute: typeof ExamsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -239,6 +277,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/exams-admin': {
+      id: '/_authenticated/exams-admin'
+      path: '/exams-admin'
+      fullPath: '/exams-admin'
+      preLoaderRoute: typeof AuthenticatedExamsAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pastoral-care': {
       id: '/_authenticated/pastoral-care'
       path: '/pastoral-care'
@@ -246,16 +291,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPastoralCareRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/exams/': {
+      id: '/exams/'
+      path: '/exams'
+      fullPath: '/exams/'
+      preLoaderRoute: typeof ExamsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exams/$examId': {
+      id: '/exams/$examId'
+      path: '/exams/$examId'
+      fullPath: '/exams/$examId'
+      preLoaderRoute: typeof ExamsExamIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedContentRoute: typeof AuthenticatedContentRoute
+  AuthenticatedExamsAdminRoute: typeof AuthenticatedExamsAdminRoute
   AuthenticatedPastoralCareRoute: typeof AuthenticatedPastoralCareRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContentRoute: AuthenticatedContentRoute,
+  AuthenticatedExamsAdminRoute: AuthenticatedExamsAdminRoute,
   AuthenticatedPastoralCareRoute: AuthenticatedPastoralCareRoute,
 }
 
@@ -272,6 +333,8 @@ const rootRouteChildren: RootRouteChildren = {
   LibraryRoute: LibraryRoute,
   SermonsRoute: SermonsRoute,
   SubmitIssueRoute: SubmitIssueRoute,
+  ExamsExamIdRoute: ExamsExamIdRoute,
+  ExamsIndexRoute: ExamsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

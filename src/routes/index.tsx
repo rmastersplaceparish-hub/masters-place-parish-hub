@@ -33,6 +33,7 @@ import { Reveal } from "@/components/site/reveal";
 import { SplashScreen } from "@/components/site/splash-screen";
 import {
   CHURCH_ADDRESS,
+  CONTACT_EMAIL,
   coreValues,
   desires,
   events,
@@ -678,6 +679,12 @@ function HomePage() {
               <MapPin className="size-5 text-accent" />
               <h3 className="font-display mt-4 text-base font-semibold">Visit the parish</h3>
               <p className="mt-2 text-sm text-current/70">{CHURCH_ADDRESS}</p>
+              <p className="mt-2 text-sm text-current/70">
+                Email:{" "}
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-current underline underline-offset-4">
+                  {CONTACT_EMAIL}
+                </a>
+              </p>
               <ul className="mt-4 space-y-1.5 text-sm text-current/70">
                 {serviceTimes.map((s) => (
                   <li key={s.day}>

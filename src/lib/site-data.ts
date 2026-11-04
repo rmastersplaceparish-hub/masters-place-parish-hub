@@ -16,6 +16,9 @@ export const TELEGRAM_CHANNEL_HANDLE = "rccgmpp";
 
 export const CHURCH_ADDRESS = "Mayfair, Opposite Slot, Ile-Ife, Osun State, Nigeria";
 
+/** The single contact / admin / support email for the parish. */
+export const CONTACT_EMAIL = "rccgmastersplace7@gmail.com";
+
 export const serviceTimes = [
   { day: "Sunday", title: "Sunday Worship Service", time: "9:00 AM – 11:30 AM" },
   { day: "Tuesday", title: "Bible Study (Digging Deep)", time: "5:30 PM" },

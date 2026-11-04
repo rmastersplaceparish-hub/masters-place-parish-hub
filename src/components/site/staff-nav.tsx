@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { CalendarDays, HeartHandshake, LogOut } from "lucide-react";
+import { CalendarDays, GraduationCap, HeartHandshake, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const tabClass =
@@ -25,6 +25,9 @@ export function StaffNav() {
         </Link>
         <Link to="/content" className={tabClass}>
           <CalendarDays className="size-4" /> Events &amp; Gallery
+        </Link>
+        <Link to="/exams-admin" className={tabClass}>
+          <GraduationCap className="size-4" /> Exams
         </Link>
         <button
           onClick={() => void signOut()}

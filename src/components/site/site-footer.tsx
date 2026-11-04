@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin, Send, Images, ShieldCheck } from "lucide-react";
-import { CHURCH_ADDRESS, serviceTimes, TELEGRAM_CHANNEL_URL } from "@/lib/site-data";
+import { MapPin, Send, Images, ShieldCheck, Mail } from "lucide-react";
+import { CHURCH_ADDRESS, CONTACT_EMAIL, serviceTimes, TELEGRAM_CHANNEL_URL } from "@/lib/site-data";
 import { DRIVE_ROOT_URL } from "@/lib/gallery";
 import logo from "@/assets/logo.png";
 
@@ -10,6 +10,7 @@ const exploreLinks = [
   { label: "Audio Messages", to: "/audio" },
   { label: "Sermons", to: "/sermons" },
   { label: "Library", to: "/library" },
+  { label: "Exams", to: "/exams" },
 ] as const;
 
 const careLinks = [
@@ -100,6 +101,12 @@ export function SiteFooter() {
             <p className="mt-4 flex gap-2.5 text-sm text-current/75">
               <MapPin className="mt-0.5 size-4 shrink-0" />
               {CHURCH_ADDRESS}
+            </p>
+            <p className="mt-3 flex gap-2.5 text-sm text-current/75">
+              <Mail className="mt-0.5 size-4 shrink-0" />
+              <a href={`mailto:${CONTACT_EMAIL}`} className="focus-ring break-all hover:text-current hover:underline">
+                {CONTACT_EMAIL}
+              </a>
             </p>
             <p className="mt-5 flex gap-2.5 text-sm text-current/70">
               <ShieldCheck className="mt-0.5 size-4 shrink-0" />

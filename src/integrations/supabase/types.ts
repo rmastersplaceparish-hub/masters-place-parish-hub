@@ -62,6 +62,127 @@ export type Database = {
         }
         Relationships: []
       }
+      exam_attempts: {
+        Row: {
+          answers: Json
+          auto_submitted: boolean
+          created_at: string
+          exam_id: string
+          id: string
+          score: number
+          student_name: string
+          total_marks: number
+        }
+        Insert: {
+          answers?: Json
+          auto_submitted?: boolean
+          created_at?: string
+          exam_id: string
+          id?: string
+          score?: number
+          student_name: string
+          total_marks?: number
+        }
+        Update: {
+          answers?: Json
+          auto_submitted?: boolean
+          created_at?: string
+          exam_id?: string
+          id?: string
+          score?: number
+          student_name?: string
+          total_marks?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exam_attempts_exam_id_fkey"
+            columns: ["exam_id"]
+            isOneToOne: false
+            referencedRelation: "exams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exam_questions: {
+        Row: {
+          correct_answer: string
+          created_at: string
+          exam_id: string
+          id: string
+          marks: number
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          position: number
+          question: string
+        }
+        Insert: {
+          correct_answer: string
+          created_at?: string
+          exam_id: string
+          id?: string
+          marks?: number
+          option_a: string
+          option_b: string
+          option_c: string
+          option_d: string
+          position?: number
+          question: string
+        }
+        Update: {
+          correct_answer?: string
+          created_at?: string
+          exam_id?: string
+          id?: string
+          marks?: number
+          option_a?: string
+          option_b?: string
+          option_c?: string
+          option_d?: string
+          position?: number
+          question?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exam_questions_exam_id_fkey"
+            columns: ["exam_id"]
+            isOneToOne: false
+            referencedRelation: "exams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exams: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_minutes: number | null
+          id: string
+          is_published: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_published?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_published?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_photos: {
         Row: {
           caption: string | null
@@ -183,6 +304,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_exam_for_student: { Args: { p_exam_id: string }; Returns: Json }
       get_thread_by_code: { Args: { p_access_code: string }; Returns: Json }
       has_role: {
         Args: {
@@ -193,6 +315,15 @@ export type Database = {
       }
       reply_to_thread: {
         Args: { p_access_code: string; p_message: string }
+        Returns: Json
+      }
+      submit_exam: {
+        Args: {
+          p_answers: Json
+          p_auto?: boolean
+          p_exam_id: string
+          p_student_name: string
+        }
         Returns: Json
       }
       submit_issue: {

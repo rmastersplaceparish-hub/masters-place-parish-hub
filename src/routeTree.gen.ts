@@ -10,33 +10,161 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AudioRouteImport } from './routes/audio'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CheckResponseRouteImport } from './routes/check-response'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as LibraryRouteImport } from './routes/library'
+import { Route as SermonsRouteImport } from './routes/sermons'
+import { Route as SubmitIssueRouteImport } from './routes/submit-issue'
+import { Route as AuthenticatedContentRouteImport } from './routes/_authenticated/content'
+import { Route as AuthenticatedPastoralCareRouteImport } from './routes/_authenticated/pastoral-care'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AudioRoute = AudioRouteImport.update({
+  id: '/audio',
+  path: '/audio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckResponseRoute = CheckResponseRouteImport.update({
+  id: '/check-response',
+  path: '/check-response',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryRoute = LibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SermonsRoute = SermonsRouteImport.update({
+  id: '/sermons',
+  path: '/sermons',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubmitIssueRoute = SubmitIssueRouteImport.update({
+  id: '/submit-issue',
+  path: '/submit-issue',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedContentRoute = AuthenticatedContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPastoralCareRoute =
+  AuthenticatedPastoralCareRouteImport.update({
+    id: '/pastoral-care',
+    path: '/pastoral-care',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/audio': typeof AudioRoute
+  '/auth': typeof AuthRoute
+  '/check-response': typeof CheckResponseRoute
+  '/gallery': typeof GalleryRoute
+  '/library': typeof LibraryRoute
+  '/sermons': typeof SermonsRoute
+  '/submit-issue': typeof SubmitIssueRoute
+  '/content': typeof AuthenticatedContentRoute
+  '/pastoral-care': typeof AuthenticatedPastoralCareRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/audio': typeof AudioRoute
+  '/auth': typeof AuthRoute
+  '/check-response': typeof CheckResponseRoute
+  '/gallery': typeof GalleryRoute
+  '/library': typeof LibraryRoute
+  '/sermons': typeof SermonsRoute
+  '/submit-issue': typeof SubmitIssueRoute
+  '/content': typeof AuthenticatedContentRoute
+  '/pastoral-care': typeof AuthenticatedPastoralCareRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/audio': typeof AudioRoute
+  '/auth': typeof AuthRoute
+  '/check-response': typeof CheckResponseRoute
+  '/gallery': typeof GalleryRoute
+  '/library': typeof LibraryRoute
+  '/sermons': typeof SermonsRoute
+  '/submit-issue': typeof SubmitIssueRoute
+  '/_authenticated/content': typeof AuthenticatedContentRoute
+  '/_authenticated/pastoral-care': typeof AuthenticatedPastoralCareRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/audio'
+    | '/auth'
+    | '/check-response'
+    | '/gallery'
+    | '/library'
+    | '/sermons'
+    | '/submit-issue'
+    | '/content'
+    | '/pastoral-care'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/audio'
+    | '/auth'
+    | '/check-response'
+    | '/gallery'
+    | '/library'
+    | '/sermons'
+    | '/submit-issue'
+    | '/content'
+    | '/pastoral-care'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/audio'
+    | '/auth'
+    | '/check-response'
+    | '/gallery'
+    | '/library'
+    | '/sermons'
+    | '/submit-issue'
+    | '/_authenticated/content'
+    | '/_authenticated/pastoral-care'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AudioRoute: typeof AudioRoute
+  AuthRoute: typeof AuthRoute
+  CheckResponseRoute: typeof CheckResponseRoute
+  GalleryRoute: typeof GalleryRoute
+  LibraryRoute: typeof LibraryRoute
+  SermonsRoute: typeof SermonsRoute
+  SubmitIssueRoute: typeof SubmitIssueRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +176,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/audio': {
+      id: '/audio'
+      path: '/audio'
+      fullPath: '/audio'
+      preLoaderRoute: typeof AudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/check-response': {
+      id: '/check-response'
+      path: '/check-response'
+      fullPath: '/check-response'
+      preLoaderRoute: typeof CheckResponseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library': {
+      id: '/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sermons': {
+      id: '/sermons'
+      path: '/sermons'
+      fullPath: '/sermons'
+      preLoaderRoute: typeof SermonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/submit-issue': {
+      id: '/submit-issue'
+      path: '/submit-issue'
+      fullPath: '/submit-issue'
+      preLoaderRoute: typeof SubmitIssueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/content': {
+      id: '/_authenticated/content'
+      path: '/content'
+      fullPath: '/content'
+      preLoaderRoute: typeof AuthenticatedContentRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pastoral-care': {
+      id: '/_authenticated/pastoral-care'
+      path: '/pastoral-care'
+      fullPath: '/pastoral-care'
+      preLoaderRoute: typeof AuthenticatedPastoralCareRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedContentRoute: typeof AuthenticatedContentRoute
+  AuthenticatedPastoralCareRoute: typeof AuthenticatedPastoralCareRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedContentRoute: AuthenticatedContentRoute,
+  AuthenticatedPastoralCareRoute: AuthenticatedPastoralCareRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AudioRoute: AudioRoute,
+  AuthRoute: AuthRoute,
+  CheckResponseRoute: CheckResponseRoute,
+  GalleryRoute: GalleryRoute,
+  LibraryRoute: LibraryRoute,
+  SermonsRoute: SermonsRoute,
+  SubmitIssueRoute: SubmitIssueRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

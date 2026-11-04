@@ -1,0 +1,12 @@
+# Migration roadmap
+- [x] Copy the public repository.
+- [x] Inspect the shared Google Photos album.
+- [x] Replace the project gallery photography.
+- [x] Verify the home page and gallery.
+- [x] Build confidential pastoral care database and secure visitor access-code flow.
+- [x] Add protected pastoral staff sign-in and response workspace.
+- [x] Verify anonymous submission and private conversation lookup end to end.
+- [x] Create pastoral staff accounts and assign pastor/admin roles in Supabase Auth.
+- [x] Assign the newly created Supabase user the admin role and verify access.
+- [x] Ensure shared album photos load with correctly named files on Vercel as well as the site preview.
+- [x] Store the shared album photos in church media and gallery_photos so staff can edit, replace, and delete them from /content.

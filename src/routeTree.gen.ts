@@ -19,6 +19,7 @@ import { Route as LibraryRouteImport } from './routes/library'
 import { Route as SermonsRouteImport } from './routes/sermons'
 import { Route as SubmitIssueRouteImport } from './routes/submit-issue'
 import { Route as AuthenticatedContentRouteImport } from './routes/_authenticated/content'
+import { Route as AuthenticatedExamsAdminRouteImport } from './routes/_authenticated/exams-admin'
 import { Route as AuthenticatedPastoralCareRouteImport } from './routes/_authenticated/pastoral-care'
 
 const IndexRoute = IndexRouteImport.update({
@@ -70,6 +71,11 @@ const AuthenticatedContentRoute = AuthenticatedContentRouteImport.update({
   path: '/content',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedExamsAdminRoute = AuthenticatedExamsAdminRouteImport.update({
+  id: '/exams-admin',
+  path: '/exams-admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPastoralCareRoute =
   AuthenticatedPastoralCareRouteImport.update({
     id: '/pastoral-care',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/sermons': typeof SermonsRoute
   '/submit-issue': typeof SubmitIssueRoute
   '/content': typeof AuthenticatedContentRoute
+  '/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/pastoral-care': typeof AuthenticatedPastoralCareRoute
 }
 export interface FileRoutesByTo {
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/sermons': typeof SermonsRoute
   '/submit-issue': typeof SubmitIssueRoute
   '/content': typeof AuthenticatedContentRoute
+  '/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/pastoral-care': typeof AuthenticatedPastoralCareRoute
 }
 export interface FileRoutesById {
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/sermons': typeof SermonsRoute
   '/submit-issue': typeof SubmitIssueRoute
   '/_authenticated/content': typeof AuthenticatedContentRoute
+  '/_authenticated/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/_authenticated/pastoral-care': typeof AuthenticatedPastoralCareRoute
 }
 export interface FileRouteTypes {
@@ -127,6 +136,7 @@ export interface FileRouteTypes {
     | '/sermons'
     | '/submit-issue'
     | '/content'
+    | '/exams-admin'
     | '/pastoral-care'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/sermons'
     | '/submit-issue'
     | '/content'
+    | '/exams-admin'
     | '/pastoral-care'
   id:
     | '__root__'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/sermons'
     | '/submit-issue'
     | '/_authenticated/content'
+    | '/_authenticated/exams-admin'
     | '/_authenticated/pastoral-care'
   fileRoutesById: FileRoutesById
 }
@@ -239,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/exams-admin': {
+      id: '/_authenticated/exams-admin'
+      path: '/exams-admin'
+      fullPath: '/exams-admin'
+      preLoaderRoute: typeof AuthenticatedExamsAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pastoral-care': {
       id: '/_authenticated/pastoral-care'
       path: '/pastoral-care'
@@ -251,11 +270,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedContentRoute: typeof AuthenticatedContentRoute
+  AuthenticatedExamsAdminRoute: typeof AuthenticatedExamsAdminRoute
   AuthenticatedPastoralCareRoute: typeof AuthenticatedPastoralCareRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContentRoute: AuthenticatedContentRoute,
+  AuthenticatedExamsAdminRoute: AuthenticatedExamsAdminRoute,
   AuthenticatedPastoralCareRoute: AuthenticatedPastoralCareRoute,
 }
 

@@ -130,11 +130,7 @@ function LibraryPage() {
                   <SectionHeading
                     eyebrow="Class manual"
                     title={BOOK_CATEGORY_LABELS[category]}
-                    description={
-                      list.length === 0
-                        ? "Material for this class is being prepared for publication."
-                        : undefined
-                    }
+                    {...(list.length === 0 ? { description: "Material for this class is being prepared for publication." } : {})}
                   />
                   {list.length > 0 && (
                     <div className="mt-10 grid gap-6 md:grid-cols-3">

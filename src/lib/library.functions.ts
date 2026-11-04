@@ -161,7 +161,7 @@ export const updateBook = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertLibraryStaff(context.supabase, context.userId);
-    const patch: Record<string, unknown> = {};
+    const patch: { is_visible?: boolean; display_order?: number } = {};
     if (data.isVisible !== undefined) patch["is_visible"] = data.isVisible;
     if (data.displayOrder !== undefined) patch["display_order"] = data.displayOrder;
     const { error } = await context.supabase.from("library_books").update(patch).eq("id", data.id);

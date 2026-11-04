@@ -1,1 +1,51 @@
-{"source": "github", "source_url": "https://github.com/rmastersplaceparish-hub/themastersplace.git", "capabilities": [{"capability": "application code", "source": "GitHub repository (Lovable TanStack Start project)", "outcome": "migrate", "status": "copied", "next_action": "Verify routes render in preview"}, {"capability": "schema", "source": "7 supabase/migrations SQL files (user_roles, pastoral_submissions, pastoral_messages, church_events, gallery_photos)", "outcome": "migrate", "status": "copied", "next_action": "Migrations are NOT applied here; user links their existing Supabase project which already has the schema"}, {"capability": "database records", "source": "User's existing external Supabase project (to be linked in Lovable settings)", "outcome": "pending", "status": "waiting_on_user", "next_action": "User connects their Supabase via Settings → General → External Supabase"}, {"capability": "auth identities", "source": "Existing Supabase auth users", "outcome": "pending", "status": "waiting_on_user", "next_action": "Carried by the user's own Supabase project once linked"}, {"capability": "storage", "source": "Supabase storage (referenced by gallery photos)", "outcome": "pending", "status": "waiting_on_user", "next_action": "Carried by the linked Supabase project"}, {"capability": "environment variables", "source": ".env in repository (publishable Supabase values only)", "outcome": "copied", "status": "copied", "next_action": "Will be superseded by the linked Supabase connection values"}], "warnings": ["Existing records and auth users live in the user's own Supabase project; nothing was exported in this step.", "Preview cannot show live data until the external Supabase connection is active."]}
+{
+  "source": "github",
+  "source_url": "https://github.com/rmastersplaceparish-hub/themastersplace.git",
+  "capabilities": [
+    {
+      "capability": "application code",
+      "source": "GitHub repository (Lovable TanStack Start project)",
+      "outcome": "migrate",
+      "status": "copied",
+      "next_action": "Verify routes render in preview"
+    },
+    {
+      "capability": "schema",
+      "source": "7 supabase/migrations SQL files (user_roles, pastoral_submissions, pastoral_messages, church_events, gallery_photos)",
+      "outcome": "migrate",
+      "status": "copied",
+      "next_action": "Migrations are NOT applied here; user links their existing Supabase project which already has the schema"
+    },
+    {
+      "capability": "database records",
+      "source": "User's existing external Supabase project (to be linked in Lovable settings)",
+      "outcome": "linked",
+      "status": "verified_live",
+      "next_action": "User connects their Supabase via Settings \u2192 General \u2192 External Supabase"
+    },
+    {
+      "capability": "auth identities",
+      "source": "Existing Supabase auth users",
+      "outcome": "linked",
+      "status": "verified_live",
+      "next_action": "Carried by the user's own Supabase project once linked"
+    },
+    {
+      "capability": "storage",
+      "source": "Supabase storage (referenced by gallery photos)",
+      "outcome": "linked",
+      "status": "verified_live",
+      "next_action": "Carried by the linked Supabase project"
+    },
+    {
+      "capability": "environment variables",
+      "source": ".env in repository (publishable Supabase values only)",
+      "outcome": "copied",
+      "status": "copied",
+      "next_action": "Will be superseded by the linked Supabase connection values"
+    }
+  ],
+  "warnings": [
+    "External Supabase project MASTER'SPLACEPARISHDB (asczgjntkdlatzqrlidz) linked and verified live on 2026-11-04."
+  ]
+}

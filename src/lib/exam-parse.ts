@@ -26,13 +26,13 @@ export function parseExamRows(rows: unknown[][]): ParsedQuestion[] {
   if (body.length === 0) throw new Error("The file has no questions under the header row.");
   return body.map((r, i) => {
     const line = i + 2;
-    const [q, a, b, c, d, ans, m] = r.map(str);
+    const [q = "", a = "", b = "", c = "", d = "", ans = "", m = ""] = r.map(str);
     if (!q || !a || !b || !c || !d) throw new Error(`Row ${line}: question and all four options are required.`);
     let letter = ans.toUpperCase().replace(/^OPTION\s+/, "");
     if (!["A", "B", "C", "D"].includes(letter)) {
       const idx = [a, b, c, d].findIndex((o) => o.toLowerCase() === ans.toLowerCase());
       if (idx < 0) throw new Error(`Row ${line}: correct answer must be A, B, C, D or match an option.`);
-      letter = "ABCD"[idx];
+      letter = "ABCD"[idx] ?? "A";
     }
     const marks = m === "" ? 1 : Number(m);
     if (!Number.isFinite(marks) || marks < 0) throw new Error(`Row ${line}: marks must be a number.`);

@@ -91,7 +91,7 @@ function TakeExamPage() {
 
   return (
     <PageShell>
-      <PageHeader eyebrow="Exam" title={exam.title} description={exam.description ?? undefined} />
+      <PageHeader eyebrow="Exam" title={exam.title} {...(exam.description ? { description: exam.description } : {})} />
       <div className="mx-auto max-w-3xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
         {result ? (
           <div className="panel p-8 text-center">

@@ -9,7 +9,7 @@ describe("exam excel parsing", () => {
     expect(q[0]).toMatchObject({ correct_answer: "B", marks: 2 });
   });
   it("accepts the option text as the correct answer", () => {
-    expect(parseExamRows([header, ["Q", "Noah", "Moses", "x", "y", "Moses", 1]])[0].correct_answer).toBe("B");
+    expect(parseExamRows([header, ["Q", "Noah", "Moses", "x", "y", "Moses", 1]])[0]?.correct_answer).toBe("B");
   });
   it("rejects an invalid correct answer", () => {
     expect(() => parseExamRows([header, ["Q", "a", "b", "c", "d", "E", 1]])).toThrow();

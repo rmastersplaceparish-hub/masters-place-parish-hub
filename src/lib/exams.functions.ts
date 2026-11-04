@@ -52,7 +52,7 @@ export const listManagedExams = createServerFn({ method: "GET" })
     return {
       exams: (exams ?? []).map((e: Record<string, unknown>) => ({
         ...e,
-        question_count: (e.exam_questions as { count: number }[] | undefined)?.[0]?.count ?? 0,
+        question_count: (e["exam_questions"] as { count: number }[] | undefined)?.[0]?.count ?? 0,
         exam_questions: undefined,
       })) as ManagedExam[],
       attempts: (attempts ?? []) as ExamAttempt[],
@@ -101,8 +101,8 @@ export const updateExamSettings = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const patch: Record<string, unknown> = {};
-    if (data.durationMinutes !== undefined) patch.duration_minutes = data.durationMinutes;
-    if (data.isPublished !== undefined) patch.is_published = data.isPublished;
+    if (data.durationMinutes !== undefined) patch["duration_minutes"] = data.durationMinutes;
+    if (data.isPublished !== undefined) patch["is_published"] = data.isPublished;
     const { error } = await untyped(context.supabase).from("exams").update(patch).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };

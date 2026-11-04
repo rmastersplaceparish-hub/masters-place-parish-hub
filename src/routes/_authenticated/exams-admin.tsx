@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, FileSpreadsheet, Mail, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import readXlsxFile from "read-excel-file";
-import writeXlsxFile from "write-excel-file";
+import { readSheet } from "read-excel-file/browser";
+import writeXlsxFile from "write-excel-file/browser";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,7 @@ async function downloadTemplate() {
     ["Who built the ark?", "Moses", "Noah", "Abraham", "David", "B", 2],
     ["How many books are in the Bible?", "66", "39", "27", "72", "A", 1],
   ].map((r) => r.map((v) => ({ value: v })));
-  await writeXlsxFile([header, ...sample] as never, { fileName: "exam-questions-template.xlsx" });
+  await writeXlsxFile([header, ...sample] as never).toFile("exam-questions-template.xlsx");
 }
 
 function ExamsAdminPage() {
@@ -73,7 +73,7 @@ function ExamsAdminPage() {
     if (!file) return;
     setFileName(file.name);
     try {
-      const rows = await readXlsxFile(file);
+      const rows = await readSheet(file);
       const parsed = parseExamRows(rows as unknown[][]);
       setQuestions(parsed);
       toast.success(`${parsed.length} questions read from the file.`);
@@ -83,12 +83,16 @@ function ExamsAdminPage() {
   };
 
   const onCreate = async () => {
-    if (!questions) return toast.error("Upload an Excel file of questions first.");
+    if (!questions) {
+      toast.error("Upload an Excel file of questions first.");
+      return;
+    }
     let mins: number | null;
     try {
       mins = parseDuration(duration);
     } catch (e) {
-      return toast.error((e as Error).message);
+      toast.error((e as Error).message);
+      return;
     }
     setSaving(true);
     try {

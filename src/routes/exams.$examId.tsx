@@ -44,6 +44,7 @@ function TakeExamPage() {
   const doneRef = useRef(false);
   const tabSwitchesRef = useRef(0);
   const lastLeaveEventAtRef = useRef(0);
+  const lastLeaveEventTypeRef = useRef<"blur" | "visibility" | null>(null);
 
   useEffect(() => {
     getStudentExam(examId).then(setExam).catch(() => setExam(null));
@@ -71,10 +72,11 @@ function TakeExamPage() {
   // Warn on the first leave event; automatically submit after a second one.
   useEffect(() => {
     if (!started || result) return;
-    const recordLeave = () => {
+    const recordLeave = (eventType: "blur" | "visibility") => {
       const now = Date.now();
-      if (now - lastLeaveEventAtRef.current < 1000) return;
+      if (lastLeaveEventTypeRef.current !== eventType && now - lastLeaveEventAtRef.current < 1000) return;
       lastLeaveEventAtRef.current = now;
+      lastLeaveEventTypeRef.current = eventType;
       tabSwitchesRef.current += 1;
       if (tabSwitchesRef.current === 1) {
         setShowLeaveWarning(true);
@@ -83,9 +85,9 @@ function TakeExamPage() {
       }
     };
     const onVisibilityChange = () => {
-      if (document.visibilityState === "hidden") recordLeave();
+      if (document.visibilityState === "hidden") recordLeave("visibility");
     };
-    const onBlur = () => recordLeave();
+    const onBlur = () => recordLeave("blur");
     document.addEventListener("visibilitychange", onVisibilityChange);
     window.addEventListener("blur", onBlur);
     return () => {

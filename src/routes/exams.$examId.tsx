@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PageShell, PageHeader } from "@/components/site/page-shell";
 import { getStudentExam, submitExam, type StudentExam } from "@/lib/exams";
+import { shuffleExam, type ShuffledQuestion } from "@/lib/exam-shuffle";
 
 export const Route = createFileRoute("/exams/$examId")({
   head: () => ({
@@ -32,26 +33,31 @@ function TakeExamPage() {
   const [exam, setExam] = useState<StudentExam | null | undefined>(undefined);
   const [name, setName] = useState("");
   const [started, setStarted] = useState(false);
+  const [displayQuestions, setDisplayQuestions] = useState<ShuffledQuestion[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [remaining, setRemaining] = useState<number | null>(null);
   const [result, setResult] = useState<{ score: number; total: number } | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [showLeaveWarning, setShowLeaveWarning] = useState(false);
   const answersRef = useRef(answers);
   answersRef.current = answers;
   const doneRef = useRef(false);
+  const tabSwitchesRef = useRef(0);
+  const lastLeaveEventAtRef = useRef(0);
 
   useEffect(() => {
     getStudentExam(examId).then(setExam).catch(() => setExam(null));
   }, [examId]);
 
   const submit = useCallback(
-    async (auto: boolean) => {
+    async (auto: boolean, reason: "time" | "leaving" = "time") => {
       if (doneRef.current) return;
       doneRef.current = true;
       setSubmitting(true);
       try {
-        setResult(await submitExam({ examId, name, answers: answersRef.current, auto }));
-        if (auto) toast.info("Time is up — your exam was submitted automatically.");
+        setResult(await submitExam({ examId, name, answers: answersRef.current, auto, tabSwitches: tabSwitchesRef.current }));
+        if (auto && reason === "time") toast.info("Time is up — your exam was submitted automatically.");
+        if (auto && reason === "leaving") toast.info("You left the exam again — it was submitted automatically.");
       } catch (e) {
         doneRef.current = false;
         toast.error(e instanceof Error ? e.message : "Could not submit exam.");
@@ -62,6 +68,35 @@ function TakeExamPage() {
     [examId, name],
   );
 
+  // Warn on the first leave event; automatically submit after a second one.
+  useEffect(() => {
+    if (!started || result) return;
+    const recordLeave = () => {
+      if (document.visibilityState === "hidden" || document.visibilityState === "visible") {
+        if (document.visibilityState === "visible" && document.hasFocus()) return;
+      }
+      const now = Date.now();
+      if (now - lastLeaveEventAtRef.current < 1000) return;
+      lastLeaveEventAtRef.current = now;
+      tabSwitchesRef.current += 1;
+      if (tabSwitchesRef.current === 1) {
+        setShowLeaveWarning(true);
+      } else {
+        void submit(true, "leaving");
+      }
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "hidden") recordLeave();
+    };
+    const onBlur = () => recordLeave();
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("blur", onBlur);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("blur", onBlur);
+    };
+  }, [started, result, submit]);
+
   // Countdown only when the exam has a duration.
   useEffect(() => {
     if (!started || !exam?.duration_minutes || result) return;
@@ -69,7 +104,7 @@ function TakeExamPage() {
     const tick = () => {
       const left = Math.max(0, Math.round((end - Date.now()) / 1000));
       setRemaining(left);
-      if (left === 0) void submit(true);
+      if (left === 0) void submit(true, "time");
     };
     tick();
     const id = window.setInterval(tick, 1000);
@@ -109,7 +144,10 @@ function TakeExamPage() {
               <Label htmlFor="name">Your full name</Label>
               <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
-            <Button disabled={!name.trim()} onClick={() => setStarted(true)}>Begin exam</Button>
+            <Button disabled={!name.trim()} onClick={() => {
+              setDisplayQuestions(shuffleExam(exam.questions));
+              setStarted(true);
+            }}>Begin exam</Button>
           </div>
         ) : (
           <>
@@ -121,20 +159,20 @@ function TakeExamPage() {
                 <Clock className="size-5" /> {fmt(remaining)}
               </div>
             )}
-            {exam.questions.map((q, i) => (
+            {displayQuestions.map(({ question: q, options }, i) => (
               <fieldset key={q.id} className="panel space-y-3 p-5">
                 <legend className="font-medium">
                   {i + 1}. {q.question} <span className="text-xs text-muted-foreground">({q.marks} mark{Number(q.marks) === 1 ? "" : "s"})</span>
                 </legend>
-                {(["A", "B", "C", "D"] as const).map((l) => (
-                  <label key={l} className="flex cursor-pointer items-center gap-3 rounded-md border border-border p-3 text-sm hover:bg-secondary">
+                {options.map((option, optionIndex) => (
+                  <label key={option.letter} className="flex cursor-pointer items-center gap-3 rounded-md border border-border p-3 text-sm hover:bg-secondary">
                     <input
                       type="radio"
                       name={q.id}
-                      checked={answers[q.id] === l}
-                      onChange={() => setAnswers((a) => ({ ...a, [q.id]: l }))}
+                      checked={answers[q.id] === option.letter}
+                      onChange={() => setAnswers((a) => ({ ...a, [q.id]: option.letter }))}
                     />
-                    <span className="font-semibold">{l}.</span> {q[`option_${l.toLowerCase()}` as "option_a"]}
+                    <span className="font-semibold">{(["A", "B", "C", "D"] as const)[optionIndex]}.</span> {option.text}
                   </label>
                 ))}
               </fieldset>
@@ -143,7 +181,7 @@ function TakeExamPage() {
               size="lg"
               disabled={submitting}
               onClick={() => {
-                const unanswered = exam.questions.length - Object.keys(answers).length;
+                const unanswered = displayQuestions.length - Object.keys(answers).length;
                 if (unanswered > 0 && !window.confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`)) return;
                 void submit(false);
               }}
@@ -153,6 +191,15 @@ function TakeExamPage() {
           </>
         )}
       </div>
+      {showLeaveWarning && !result && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-6" role="alertdialog" aria-modal="true" aria-labelledby="leave-warning-title">
+          <div className="max-w-lg space-y-5 text-center">
+            <h2 id="leave-warning-title" className="font-display text-2xl font-semibold">You left the exam</h2>
+            <p className="text-muted-foreground">Please stay on this page. Leaving again will submit your exam automatically.</p>
+            <Button onClick={() => setShowLeaveWarning(false)}>Return to exam</Button>
+          </div>
+        </div>
+      )}
     </PageShell>
   );
 }

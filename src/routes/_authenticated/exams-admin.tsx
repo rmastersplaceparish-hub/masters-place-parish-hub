@@ -206,13 +206,14 @@ function ExamsAdminPage() {
                 {results.length > 0 && (
                   <table className="w-full text-sm">
                     <thead className="text-left text-muted-foreground">
-                      <tr><th className="py-1">Student</th><th>Score</th><th>Submitted</th></tr>
+                      <tr><th className="py-1">Student</th><th>Score</th><th>Left page</th><th>Submitted</th></tr>
                     </thead>
                     <tbody>
                       {results.map((a) => (
                         <tr key={a.id} className="border-t border-border">
                           <td className="py-1.5">{a.student_name}</td>
-                          <td>{a.score} / {a.total_marks}{a.auto_submitted ? " (time up)" : ""}</td>
+                          <td>{a.score} / {a.total_marks}{a.auto_submitted ? " (auto-submitted)" : ""}</td>
+                          <td>{a.tab_switches > 0 ? `${a.tab_switches}×` : "—"}</td>
                           <td>{new Date(a.created_at).toLocaleString()}</td>
                         </tr>
                       ))}

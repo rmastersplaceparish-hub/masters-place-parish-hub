@@ -42,12 +42,13 @@ export async function getStudentExam(id: string): Promise<StudentExam | null> {
   return data ?? null;
 }
 
-export async function submitExam(args: { examId: string; name: string; answers: Record<string, string>; auto: boolean }) {
+export async function submitExam(args: { examId: string; name: string; answers: Record<string, string>; auto: boolean; tabSwitches: number }) {
   const { data, error } = await db.rpc("submit_exam", {
     p_exam_id: args.examId,
     p_student_name: args.name,
     p_answers: args.answers,
     p_auto: args.auto,
+    p_tab_switches: args.tabSwitches,
   });
   if (error) throw new Error(error.message);
   return data as { score: number; total: number };

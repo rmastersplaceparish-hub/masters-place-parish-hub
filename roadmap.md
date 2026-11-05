@@ -10,3 +10,5 @@
 - [x] Assign the newly created Supabase user the admin role and verify access.
 - [x] Ensure shared album photos load with correctly named files on Vercel as well as the site preview.
 - [x] Store the shared album photos in church media and gallery_photos so staff can edit, replace, and delete them from /content.
+- [ ] Finish exam question/option shuffling, leave-page warnings and automatic submission, staff leave counts, and Books navigation.
+- [ ] Verify student exam behavior, library pages, and focused regression tests.

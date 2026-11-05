@@ -18,6 +18,7 @@ export interface ExamAttempt {
   score: number;
   total_marks: number;
   auto_submitted: boolean;
+  tab_switches: number;
   created_at: string;
 }
 
@@ -45,7 +46,7 @@ export const listManagedExams = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     const { data: attempts, error: aErr } = await db
       .from("exam_attempts")
-      .select("id,exam_id,student_name,score,total_marks,auto_submitted,created_at")
+      .select("id,exam_id,student_name,score,total_marks,auto_submitted,tab_switches,created_at")
       .order("created_at", { ascending: false })
       .limit(500);
     if (aErr) throw new Error(aErr.message);

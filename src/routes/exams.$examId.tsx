@@ -72,9 +72,6 @@ function TakeExamPage() {
   useEffect(() => {
     if (!started || result) return;
     const recordLeave = () => {
-      if (document.visibilityState === "hidden" || document.visibilityState === "visible") {
-        if (document.visibilityState === "visible" && document.hasFocus()) return;
-      }
       const now = Date.now();
       if (now - lastLeaveEventAtRef.current < 1000) return;
       lastLeaveEventAtRef.current = now;

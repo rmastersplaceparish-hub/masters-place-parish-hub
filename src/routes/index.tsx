@@ -30,7 +30,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { PageShell, SectionHeading } from "@/components/site/page-shell";
 import { Reveal } from "@/components/site/reveal";
-import { SplashScreen } from "@/components/site/splash-screen";
 import {
   CHURCH_ADDRESS,
   CONTACT_EMAIL,
@@ -157,8 +156,6 @@ function HomePage() {
 
   return (
     <PageShell>
-      <SplashScreen />
-
       {announcement && (
         <div className="border-b border-accent/30 bg-accent/10">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">

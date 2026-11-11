@@ -1,0 +1,13 @@
+name: Supabase keep-alive
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase database
+        run: |
+          curl -fsS "https://asczgjntkdlatzqrlidz.supabase.co/rest/v1/church_events?select=id&limit=1" \
+            -H "apikey: sb_publishable_mYZbcdINEvIdx06QQ0hTPg_PGYIZwds"

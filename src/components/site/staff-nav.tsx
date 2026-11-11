@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { BookOpen, CalendarDays, GraduationCap, HeartHandshake, LogOut } from "lucide-react";
+import { BookOpen, CalendarDays, GraduationCap, HeartHandshake, LogOut, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const tabClass =
@@ -31,6 +31,9 @@ export function StaffNav() {
         </Link>
         <Link to="/library-admin" className={tabClass}>
           <BookOpen className="size-4" /> Books
+        </Link>
+        <Link to="/users-admin" className={tabClass}>
+          <Users className="size-4" /> Users
         </Link>
         <button
           onClick={() => void signOut()}

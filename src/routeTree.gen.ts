@@ -22,8 +22,10 @@ import { Route as AuthenticatedContentRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedExamsAdminRouteImport } from './routes/_authenticated/exams-admin'
 import { Route as AuthenticatedLibraryAdminRouteImport } from './routes/_authenticated/library-admin'
 import { Route as AuthenticatedPastoralCareRouteImport } from './routes/_authenticated/pastoral-care'
+import { Route as AuthenticatedUsersAdminRouteImport } from './routes/_authenticated/users-admin'
 import { Route as ExamsIndexRouteImport } from './routes/exams.index'
 import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
+import { Route as ApiPublicKeepaliveRouteImport } from './routes/api/public/keepalive'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -91,6 +93,11 @@ const AuthenticatedPastoralCareRoute =
     path: '/pastoral-care',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedUsersAdminRoute = AuthenticatedUsersAdminRouteImport.update({
+  id: '/users-admin',
+  path: '/users-admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const ExamsIndexRoute = ExamsIndexRouteImport.update({
   id: '/exams/',
   path: '/exams/',
@@ -99,6 +106,11 @@ const ExamsIndexRoute = ExamsIndexRouteImport.update({
 const ExamsExamIdRoute = ExamsExamIdRouteImport.update({
   id: '/exams/$examId',
   path: '/exams/$examId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicKeepaliveRoute = ApiPublicKeepaliveRouteImport.update({
+  id: '/api/public/keepalive',
+  path: '/api/public/keepalive',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -115,8 +127,10 @@ export interface FileRoutesByFullPath {
   '/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/library-admin': typeof AuthenticatedLibraryAdminRoute
   '/pastoral-care': typeof AuthenticatedPastoralCareRoute
+  '/users-admin': typeof AuthenticatedUsersAdminRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/exams/': typeof ExamsIndexRoute
+  '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -131,8 +145,10 @@ export interface FileRoutesByTo {
   '/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/library-admin': typeof AuthenticatedLibraryAdminRoute
   '/pastoral-care': typeof AuthenticatedPastoralCareRoute
+  '/users-admin': typeof AuthenticatedUsersAdminRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/exams': typeof ExamsIndexRoute
+  '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -149,8 +165,10 @@ export interface FileRoutesById {
   '/_authenticated/exams-admin': typeof AuthenticatedExamsAdminRoute
   '/_authenticated/library-admin': typeof AuthenticatedLibraryAdminRoute
   '/_authenticated/pastoral-care': typeof AuthenticatedPastoralCareRoute
+  '/_authenticated/users-admin': typeof AuthenticatedUsersAdminRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/exams/': typeof ExamsIndexRoute
+  '/api/public/keepalive': typeof ApiPublicKeepaliveRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -167,8 +185,10 @@ export interface FileRouteTypes {
     | '/exams-admin'
     | '/library-admin'
     | '/pastoral-care'
+    | '/users-admin'
     | '/exams/$examId'
     | '/exams/'
+    | '/api/public/keepalive'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -183,8 +203,10 @@ export interface FileRouteTypes {
     | '/exams-admin'
     | '/library-admin'
     | '/pastoral-care'
+    | '/users-admin'
     | '/exams/$examId'
     | '/exams'
+    | '/api/public/keepalive'
   id:
     | '__root__'
     | '/'
@@ -200,8 +222,10 @@ export interface FileRouteTypes {
     | '/_authenticated/exams-admin'
     | '/_authenticated/library-admin'
     | '/_authenticated/pastoral-care'
+    | '/_authenticated/users-admin'
     | '/exams/$examId'
     | '/exams/'
+    | '/api/public/keepalive'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -216,6 +240,7 @@ export interface RootRouteChildren {
   SubmitIssueRoute: typeof SubmitIssueRoute
   ExamsExamIdRoute: typeof ExamsExamIdRoute
   ExamsIndexRoute: typeof ExamsIndexRoute
+  ApiPublicKeepaliveRoute: typeof ApiPublicKeepaliveRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -311,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPastoralCareRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/users-admin': {
+      id: '/_authenticated/users-admin'
+      path: '/users-admin'
+      fullPath: '/users-admin'
+      preLoaderRoute: typeof AuthenticatedUsersAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/exams/': {
       id: '/exams/'
       path: '/exams'
@@ -325,6 +357,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamsExamIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/keepalive': {
+      id: '/api/public/keepalive'
+      path: '/api/public/keepalive'
+      fullPath: '/api/public/keepalive'
+      preLoaderRoute: typeof ApiPublicKeepaliveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -333,6 +372,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedExamsAdminRoute: typeof AuthenticatedExamsAdminRoute
   AuthenticatedLibraryAdminRoute: typeof AuthenticatedLibraryAdminRoute
   AuthenticatedPastoralCareRoute: typeof AuthenticatedPastoralCareRoute
+  AuthenticatedUsersAdminRoute: typeof AuthenticatedUsersAdminRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -340,6 +380,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedExamsAdminRoute: AuthenticatedExamsAdminRoute,
   AuthenticatedLibraryAdminRoute: AuthenticatedLibraryAdminRoute,
   AuthenticatedPastoralCareRoute: AuthenticatedPastoralCareRoute,
+  AuthenticatedUsersAdminRoute: AuthenticatedUsersAdminRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -357,6 +398,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubmitIssueRoute: SubmitIssueRoute,
   ExamsExamIdRoute: ExamsExamIdRoute,
   ExamsIndexRoute: ExamsIndexRoute,
+  ApiPublicKeepaliveRoute: ApiPublicKeepaliveRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
